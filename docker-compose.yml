@@ -1,0 +1,28 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: reverse_proxy
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./proxy.conf:/etc/nginx/proxy.conf
+      - C:/Users/ADMIN/Documents/ssl-certs:/etc/nginx/ssl-certs
+    ports:
+      - "3000:80"
+      - "3001:443"
+    networks:
+      - load-balancing
+    depends_on:
+      - first-api
+  
+  first-api:
+    build: ./APIs/FirstAPI
+    environment:
+      - PORT=3000
+    deploy:
+      replicas: 3
+    networks:
+      - load-balancing
+
+networks:
+  load-balancing:
