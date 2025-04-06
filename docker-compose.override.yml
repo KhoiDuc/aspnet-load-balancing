@@ -1,0 +1,6 @@
+version: '3.7'
+
+services:
+  first-api:
+    deploy:
+      replicas: 3
